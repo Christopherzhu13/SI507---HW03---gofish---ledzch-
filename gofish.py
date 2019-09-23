@@ -155,60 +155,46 @@ class Hand:
 			return True
 		return False
 
+
 def go_fish_begin():
 	deck=Deck()
 	deck.shuffle()
-	handlist=deck.deal(number_of_hands=2,hands_capacity=7)
-	A=Hand(handlist[0])
-	B=Hand(handlist[1])
-	turn="A"
+	Player1=Hand([])
+	Player2=Hand([])
+	Player3=Hand([])
+	Player4=Hand([])
+	a=input("input the number of computer player:2-4")
+	a=int(a)
+	handlist=deck.deal(number_of_hands=a,hands_capacity=7)
+	for i in range(a):
+		locals()["Player"+str(i+1)]=Hand(handlist[i])
+		print(locals()["Player"+str(i+1)])
+	turn="Player1"
 	con=True
 	Acount=0
 	Bcount=0
+	Ccount=0
+	Dcount=0
 	while con is True:
 		#A's Turn
-		if turn == "A":
-			A,B,deck,Acount,Bcount=play(A,B,turn,deck,Acount,Bcount)
-			turn ="B"
-		if turn == "B":
-			A,B,deck,Acount,Bcount=play(A,B,turn,deck,Acount,Bcount)
-			turn ="A"
+		if turn == "Player1":
+			Player1,Player2,Player3,Player4,turn,deck,Acount,Bcount,Ccount,Dcount=play(Player1,Player2,Player3,Player4,turn,deck,Acount,Bcount,Ccount,Dcount)
+			turn ="Player2"
+		if turn == "Player2":
+			Player1,Player2,Player3,Player4,turn,deck,Acount,Bcount,Ccount,Dcount=play(Player1,Player2,Player3,Player4,turn,deck,Acount,Bcount,Ccount,Dcount)
+			turn ="Player3"
+		if turn == "Player3":
+			Player1,Player2,Player3,Player4,turn,deck,Acount,Bcount,Ccount,Dcount=play(Player1,Player2,Player3,Player4,turn,deck,Acount,Bcount,Ccount,Dcount)
+			turn ="Player4"
+		if turn == "Player3":
+			Player1,Player2,Player3,Player4,turn,deck,Acount,Bcount,Ccount,Dcount=play(Player1,Player2,Player3,Player4,turn,deck,Acount,Bcount,Ccount,Dcount)
+			turn ="Player4"
 		if len(deck.cards)==0:
 			con = False
-	if Acount>Bcount:
-		print("A win!")
-	else:
-		print("B win!")
+	score=[Acount,Bcount,Ccount,Dcount]
+	print("Player"+str(score.index(max(score)))+"win!")
 
-def play(A,B,turn,deck,Acount,Bcount):
-	while True:
-		if turn =="A":
-			HAND=A
-			OTHER=B
-			print("A's turn")
-		elif turn=="B":
-			HAND=B
-			OTHER=A
-			print("B's turn")
-		print("cards in your hands")
-		print(HAND)
-		fish=False
-		x=input("The rank you request(Using 2-10,Ace,Jack,Queen and King)")
-		for c in OTHER.init_cards:
-			if str(x)==str(c.rank):
-				OTHER.remove_card(c)
-				HAND.add_card(c)
-				fish=True
-		if fish is False:
-			b=HAND.draw(deck)
-			if str(b.rank)==str(x):
-				print("Fishing successful:"+b)
-				fish=True
-		t=check_trick(HAND)
-		if t is True and turn=="A":
-			Acount=Acount+1
-		if t is True and turn=="B":
-			Bcount=Bcount+1
-		if fish is False:
-			break
-	return A,B,deck,Acount,Bcount
+
+
+if __name__ == "__main__":
+	go_fish_begin()
