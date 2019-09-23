@@ -179,3 +179,36 @@ def go_fish_begin():
 		print("A win!")
 	else:
 		print("B win!")
+
+def play(A,B,turn,deck,Acount,Bcount):
+	while True:
+		if turn =="A":
+			HAND=A
+			OTHER=B
+			print("A's turn")
+		elif turn=="B":
+			HAND=B
+			OTHER=A
+			print("B's turn")
+		print("cards in your hands")
+		print(HAND)
+		fish=False
+		x=input("The rank you request(Using 2-10,Ace,Jack,Queen and King)")
+		for c in OTHER.init_cards:
+			if str(x)==str(c.rank):
+				OTHER.remove_card(c)
+				HAND.add_card(c)
+				fish=True
+		if fish is False:
+			b=HAND.draw(deck)
+			if str(b.rank)==str(x):
+				print("Fishing successful:"+b)
+				fish=True
+		t=check_trick(HAND)
+		if t is True and turn=="A":
+			Acount=Acount+1
+		if t is True and turn=="B":
+			Bcount=Bcount+1
+		if fish is False:
+			break
+	return A,B,deck,Acount,Bcount
