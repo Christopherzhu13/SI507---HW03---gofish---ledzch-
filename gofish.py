@@ -154,3 +154,28 @@ class Hand:
 			self.init_cards.remove(count[3])
 			return True
 		return False
+
+def go_fish_begin():
+	deck=Deck()
+	deck.shuffle()
+	handlist=deck.deal(number_of_hands=2,hands_capacity=7)
+	A=Hand(handlist[0])
+	B=Hand(handlist[1])
+	turn="A"
+	con=True
+	Acount=0
+	Bcount=0
+	while con is True:
+		#A's Turn
+		if turn == "A":
+			A,B,deck,Acount,Bcount=play(A,B,turn,deck,Acount,Bcount)
+			turn ="B"
+		if turn == "B":
+			A,B,deck,Acount,Bcount=play(A,B,turn,deck,Acount,Bcount)
+			turn ="A"
+		if len(deck.cards)==0:
+			con = False
+	if Acount>Bcount:
+		print("A win!")
+	else:
+		print("B win!")
