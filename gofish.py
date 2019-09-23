@@ -155,20 +155,7 @@ class Hand:
 			return True
 		return False
 
-
-def go_fish_begin():
-	deck=Deck()
-	deck.shuffle()
-	Player1=Hand([])
-	Player2=Hand([])
-	Player3=Hand([])
-	Player4=Hand([])
-	a=input("input the number of computer player:2-4")
-	a=int(a)
-	handlist=deck.deal(number_of_hands=a,hands_capacity=7)
-	for i in range(a):
-		locals()["Player"+str(i+1)]=Hand(handlist[i])
-		print(locals()["Player"+str(i+1)])
+def go_fish_begin(Player1,Player2,Player3,Player4,deck):
 	turn="Player1"
 	con=True
 	Acount=0
@@ -186,13 +173,13 @@ def go_fish_begin():
 		if turn == "Player3":
 			Player1,Player2,Player3,Player4,turn,deck,Acount,Bcount,Ccount,Dcount=play(Player1,Player2,Player3,Player4,turn,deck,Acount,Bcount,Ccount,Dcount)
 			turn ="Player4"
-		if turn == "Player3":
+		if turn == "Player4":
 			Player1,Player2,Player3,Player4,turn,deck,Acount,Bcount,Ccount,Dcount=play(Player1,Player2,Player3,Player4,turn,deck,Acount,Bcount,Ccount,Dcount)
-			turn ="Player4"
+			turn ="Player1"
 		if len(deck.cards)==0:
 			con = False
 	score=[Acount,Bcount,Ccount,Dcount]
-	print("Player"+str(score.index(max(score)))+"win!")
+	print("Player"+str(score.index(max(score))+1)+"win!")
 
 def check_trick(HAND):
 	for c in HAND.init_cards:
@@ -203,67 +190,92 @@ def check_trick(HAND):
 			return False
 
 def play(Player1,Player2,Player3,Player4,turn,deck,Acount,Bcount,Ccount,Dcount):
-	if len(Player3.init_cards)==0:
-		if turn =="Player1":
-			HAND=Player1
-			HAND=Player1
-			OTHER=Player2
-
-		elif turn=="Player2":
-			HAND=Player2
-			OTHER=Player1
-		else:
-			return Player1,Player2,Player3,Player4,turn,deck,Acount,Bcount,Ccount,Dcount
-	elif len(Player4.init_cards)==0:
-		if turn =="Player1":
-			HAND=Player1
-			a=random.randint(2,3)
-			OTHER=locals()["Player"+str(a)]
-
-		elif turn=="Player2":
-			HAND=Player2
-			a=random.choice([1,3])
-			OTHER=locals()["Player"+str(a)]
-		elif turn=="Player3":
-			HAND=Player3
-			a=random.randint(1,2)
-			OTHER=locals()["Player"+str(a)]
-		else:
-			return Player1,Player2,Player3,Player4,turn,deck,Acount,Bcount,Ccount,Dcount
-	else:
-		if turn =="Player1":
-			HAND=Player1
-			a=random.randint(2,4)
-			OTHER=locals()["Player"+str(a)]
-
-		elif turn=="Player2":
-			HAND=Player2
-			a=random.choice([1,3,4])
-			OTHER=locals()["Player"+str(a)]
-		elif turn=="Player3":
-			HAND=Player3
-			a=random.choice([1,2,4])
-			OTHER=locals()["Player"+str(a)]
-		else:
-			HAND=Player4
-			a=random.choice([1,2,3])
-			OTHER=locals()["Player"+str(a)]
 	while True:
+		if len(Player3.init_cards)==0:
+			if turn =="Player1":
+				HAND=Player1
+				OTHER=Player2
+
+			elif turn=="Player2":
+				HAND=Player2
+				OTHER=Player1
+			else:
+				return Player1,Player2,Player3,Player4,turn,deck,Acount,Bcount,Ccount,Dcount
+		elif len(Player4.init_cards)==0:
+			if turn =="Player1":
+				HAND=Player1
+				while True:
+					a=random.randint(2,3)
+					OTHER=locals()["Player"+str(a)]
+					if len(OTHER.init_cards) !=0:
+						break
+			elif turn=="Player2":
+				HAND=Player2
+				while True:
+					a=random.choice([1,3])
+					OTHER=locals()["Player"+str(a)]
+					if len(OTHER.init_cards) !=0:
+						break
+			elif turn=="Player3":
+				HAND=Player3
+				while True:
+					a=random.randint(1,2)
+					OTHER=locals()["Player"+str(a)]
+					if len(OTHER.init_cards) !=0:
+						break
+			else:
+				return Player1,Player2,Player3,Player4,turn,deck,Acount,Bcount,Ccount,Dcount
+		else:
+			if turn =="Player1":
+				HAND=Player1
+				while True:
+					a=random.randint(2,4)
+					OTHER=locals()["Player"+str(a)]
+					if len(OTHER.init_cards) !=0:
+						break
+			elif turn=="Player2":
+				HAND=Player2
+				while True:
+					a=random.choice([1,3,4])
+					OTHER=locals()["Player"+str(a)]
+					if len(OTHER.init_cards) !=0:
+						break
+			elif turn=="Player3":
+				HAND=Player3
+				while True:
+					a=random.choice([1,2,4])
+					OTHER=locals()["Player"+str(a)]
+					if len(OTHER.init_cards) !=0:
+						break
+			else:
+				HAND=Player4
+				while True:
+					a=random.choice([1,2,3])
+					OTHER=locals()["Player"+str(a)]
+					if len(OTHER.init_cards) !=0:
+						break
 		print(turn+"'s turn")
 		print("cards in your hands")
 		print(HAND)
 		fish=False
-		x=input("The rank you request(Using 2-10,Ace,Jack,Queen and King)")
+		ranks=[]
+		for m in HAND.init_cards:
+			ranks.append(m.rank)
+		x=random.choice(ranks)
+		#x=input("The rank you request(Using 2-10,Ace,Jack,Queen and King)")
 		for c in OTHER.init_cards:
 			if str(x)==str(c.rank):
 				OTHER.remove_card(c)
 				HAND.add_card(c)
 				fish=True
 		if fish is False:
-			b=HAND.draw(deck)
-			if str(b.rank)==str(x):
-				print("Fishing successful:"+b)
-				fish=True
+			if len(deck.cards)!=0:
+				b=HAND.draw(deck)
+				if str(b.rank)==str(x):
+					print("Fishing successful:"+str(b))
+					fish=True
+			else:
+				break
 		t=check_trick(HAND)
 		if t is True and turn=="Player1":
 			Acount=Acount+1
@@ -276,5 +288,21 @@ def play(Player1,Player2,Player3,Player4,turn,deck,Acount,Bcount,Ccount,Dcount):
 		if fish is False:
 			break
 	return Player1,Player2,Player3,Player4,turn,deck,Acount,Bcount,Ccount,Dcount
+
+
+
 if __name__ == "__main__":
-	go_fish_begin()
+	deck=Deck()
+	deck.shuffle()
+	Player1=Hand([])
+	Player2=Hand([])
+	Player3=Hand([])
+	Player4=Hand([])
+	a=input("input the number of computer player:2-4")
+	a=int(a)
+	handlist=deck.deal(number_of_hands=a,hands_capacity=7)
+	for i in range(a):
+		locals()["Player"+str(i+1)]=Hand(handlist[i])
+		#print(locals()["Player"+str(i+1)])
+		#print(1)
+	go_fish_begin(Player1,Player2,Player3,Player4,deck)
