@@ -180,6 +180,14 @@ def go_fish_begin():
 	else:
 		print("B win!")
 
+def check_trick(HAND):
+	for c in HAND.init_cards:
+		b=HAND.remove_book(c.rank)
+		if b is True:
+			return True
+		else:
+			return False
+
 def play(A,B,turn,deck,Acount,Bcount):
 	while True:
 		if turn =="A":
@@ -212,3 +220,7 @@ def play(A,B,turn,deck,Acount,Bcount):
 		if fish is False:
 			break
 	return A,B,deck,Acount,Bcount
+
+
+if __name__ == "__main__":
+	go_fish_begin()
