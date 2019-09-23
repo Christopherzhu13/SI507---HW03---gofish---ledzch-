@@ -214,6 +214,67 @@ def play(Player1,Player2,Player3,Player4,turn,deck,Acount,Bcount,Ccount,Dcount):
 			OTHER=Player1
 		else:
 			return Player1,Player2,Player3,Player4,turn,deck,Acount,Bcount,Ccount,Dcount
+	elif len(Player4.init_cards)==0:
+		if turn =="Player1":
+			HAND=Player1
+			a=random.randint(2,3)
+			OTHER=locals()["Player"+str(a)]
 
+		elif turn=="Player2":
+			HAND=Player2
+			a=random.choice([1,3])
+			OTHER=locals()["Player"+str(a)]
+		elif turn=="Player3":
+			HAND=Player3
+			a=random.randint(1,2)
+			OTHER=locals()["Player"+str(a)]
+		else:
+			return Player1,Player2,Player3,Player4,turn,deck,Acount,Bcount,Ccount,Dcount
+	else:
+		if turn =="Player1":
+			HAND=Player1
+			a=random.randint(2,4)
+			OTHER=locals()["Player"+str(a)]
+
+		elif turn=="Player2":
+			HAND=Player2
+			a=random.choice([1,3,4])
+			OTHER=locals()["Player"+str(a)]
+		elif turn=="Player3":
+			HAND=Player3
+			a=random.choice([1,2,4])
+			OTHER=locals()["Player"+str(a)]
+		else:
+			HAND=Player4
+			a=random.choice([1,2,3])
+			OTHER=locals()["Player"+str(a)]
+	while True:
+		print(turn+"'s turn")
+		print("cards in your hands")
+		print(HAND)
+		fish=False
+		x=input("The rank you request(Using 2-10,Ace,Jack,Queen and King)")
+		for c in OTHER.init_cards:
+			if str(x)==str(c.rank):
+				OTHER.remove_card(c)
+				HAND.add_card(c)
+				fish=True
+		if fish is False:
+			b=HAND.draw(deck)
+			if str(b.rank)==str(x):
+				print("Fishing successful:"+b)
+				fish=True
+		t=check_trick(HAND)
+		if t is True and turn=="Player1":
+			Acount=Acount+1
+		if t is True and turn=="Player2":
+			Bcount=Bcount+1
+		if t is True and turn=="Player3":
+			Ccount=Ccount+1
+		if t is True and turn=="Player4":
+			Dcount=Dcount+1
+		if fish is False:
+			break
+	return Player1,Player2,Player3,Player4,turn,deck,Acount,Bcount,Ccount,Dcount
 if __name__ == "__main__":
 	go_fish_begin()
