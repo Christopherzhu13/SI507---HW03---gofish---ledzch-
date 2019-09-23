@@ -6,7 +6,7 @@ import unittest
 
 ##COMMENT YOUR CODE WITH:
 # Section Day/Time: Section001/101, 8:30 - 11:30 AM Tuesday. Discussion: 004/104
-# People you worked with: None
+# People you worked with: Wenhao Liu
 
 ######### DO NOT CHANGE PROVIDED CODE #########
 ### Scroll down for assignment instructions.
