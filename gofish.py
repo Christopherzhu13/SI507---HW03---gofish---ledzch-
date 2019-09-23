@@ -210,7 +210,7 @@ def play(A,B,turn,deck,Acount,Bcount):
 		if fish is False:
 			b=HAND.draw(deck)
 			if str(b.rank)==str(x):
-				print("Fishing successful:"+b)
+				print("Fishing successful:"+str(b))
 				fish=True
 		t=check_trick(HAND)
 		if t is True and turn=="A":
