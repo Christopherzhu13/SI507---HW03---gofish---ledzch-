@@ -194,7 +194,26 @@ def go_fish_begin():
 	score=[Acount,Bcount,Ccount,Dcount]
 	print("Player"+str(score.index(max(score)))+"win!")
 
+def check_trick(HAND):
+	for c in HAND.init_cards:
+		b=HAND.remove_book(c.rank)
+		if b is True:
+			return True
+		else:
+			return False
 
+def play(Player1,Player2,Player3,Player4,turn,deck,Acount,Bcount,Ccount,Dcount):
+	if len(Player3.init_cards)==0:
+		if turn =="Player1":
+			HAND=Player1
+			HAND=Player1
+			OTHER=Player2
+
+		elif turn=="Player2":
+			HAND=Player2
+			OTHER=Player1
+		else:
+			return Player1,Player2,Player3,Player4,turn,deck,Acount,Bcount,Ccount,Dcount
 
 if __name__ == "__main__":
 	go_fish_begin()
